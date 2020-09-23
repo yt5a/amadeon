@@ -1,0 +1,21 @@
+.slide {
+display: flex;
+width:calc(100% - 240px);
+height:auto;
+top:20px;
+margin-left:40px;
+margin-right:200px;
+background-color:black;
+overflow: auto;
+overflow-x: scroll;
+scroll-snap-destination: 0 0;
+scroll-snap-type: x mandatory;
+scroll-snap-type: mandatory;
+}
+
+.slide>img {
+flex-shrink: 0;/*縮小率*/
+width:100%;
+height: auto;
+scroll-snap-align:center;
+}

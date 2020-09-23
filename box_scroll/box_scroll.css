@@ -1,0 +1,42 @@
+    #cube_box{
+      display:flex;
+      background-color:gray;
+      overflow: hidden;
+    }
+    #cube_box span{
+      margin-left:5px;
+      margin-right:5px;
+    }
+    #cube_box .elem{
+      position: relative;
+      width:200px;
+      height:200px;
+      overflow: scroll;
+      margin-top:10px;
+      margin-bottom:10px;
+      scroll-snap-destination: 0 0;
+      scroll-snap-type: x mandatory;
+      scroll-snap-type: mandatory;
+    }
+    #cube_box .elem img{
+      position:absolute;
+      top:50%;
+      left:50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      width:auto;
+      height:100%;
+      scroll-snap-align:start;
+    }
+
+    /*---MOVE---*/
+    .move_w{
+      animation:move_left_a 0.5s linear forwards;
+    }
+    @keyframes move_left_a{
+      0%{transform: translate(0%);}
+      20%{transform: translate(calc(-10% - 2px));}
+      80%{transform: translate(calc(-90% - 8px));}
+      100%{transform: translate(calc(-100% - 10px));}
+    }
