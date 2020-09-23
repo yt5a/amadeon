@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style type="text/css">
+    header {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:80px;
+      margin:0 auto;
+      text-align:center;
+      background-color:gray;
+      background:radial-gradient(#ffffff, #000000);
+      z-index:5;
+    }
+    /*main*/
+    #main {
+      position:relative;
+      top:80px;
+      height:calc(100vh - 80px);
+      max-width:80%;
+      overflow-y: scroll;
+      /*scroll-snap-points-y: repeat(320px);*/
+      scroll-snap-destination: 0 0;
+      scroll-snap-type: y mandatory;
+      scroll-snap-type: mandatory;
+     }
+    .ele {
+      height:calc(100vh - 80px);
+      scroll-snap-align: start;
+    }
+    #main1{background-color:#dcdcdc;}
+    #slide_title{font-size:32px;}
+    #main2{background-color:lightblue;}
+    #main3{background-color:pink;}
+    #gg:hover + #bb{font-size:0px;color:red;}
+    #gg:hover + #bb:before {font-size:16px;white-space: pre;content: "かきくけこ\Aさしすせそ";}
+
+    /*side*/
+    #side{
+      position: fixed;
+      top:80px;
+      right:0;
+      height:100vh;
+      width:20vw;
+      background: linear-gradient(to bottom, #000000, #FFF);
+    }
+    /*albam*/
+    .album {
+      position:relative;
+      overflow:hidden;
+      width:calc(20vw - 20px);/*アルバムの幅*/
+      height:calc(20vw - 20px);/*アルバムの高さ*/
+      /*border-radius:50%;*/
+      border: solid;
+      margin:10px auto 0 auto;
+      background-color:gray;
+      z-index:2;
+　　 }
+    .album img{
+      position:absolute;
+      top: 50%;
+      left:50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      width:auto;
+      height:100%;
+    }
+    .album_name{overflow:hidden;width:auto;background-color:white;margin-top:10px;border-top:solid;border-bottom:solid;}
+    .album_name div{display: inline-block;}
+    .album_name hr{margin:0;}
+    .album_name span{
+      font-size:28px;
+      display:inline-block;
+      width:auto;
+      white-space:nowrap;
+      overflow:hidden;
+      animation:loopes 5s 1s linear alternate-reverse infinite;
+    }
+    @keyframes loopes{
+      0%{transform: translate(calc(20vw - 100% - 10px));}
+      20%{transform: translate(calc(20vw - 100% - 10px));}
+      80%{transform: translate(0%);}
+      100%{transform: translate(0%);}
+    }
+    #player{
+      position:relative;
+      overflow:hidden;
+      width:50px;/*アルバムの幅*/
+      height:50px;/*アルバムの高さ*/
+      border-radius:50%;
+      margin:10px auto 0 auto;
+      border: solid gray;
+      background:gray;
+      z-index:2;
+　　 }
+
+    #player::after{
+      content:"♪";
+      font-size:32px;
+      display: block;
+      position: absolute;
+      top:0;
+      left:0;
+      width:50px;
+      height:50px;
+      text-align:center;
+      color:white;
+      background-color:lightblue;
+      pointer-events: none;
+      z-index:3;
+    }
+
+    #player iframe{
+      position:absolute;
+      top:-100px;
+      width:auto;
+      height:1000%;
+     }
+    </style>
+    <link rel="stylesheet" href="./scroll/infinity_scroll.css">
+    <link rel="stylesheet" href="./box_scroll/box_scroll.css">
+  </head>
+  <body>
+    <header>
+      <h1>Amadeon</h1>
+    </header>
+    <main role="main">
+      <div id="main">
+        <section id="main1" class="ele">
+          <div class=""><h1>ピックアップ</h1></div>
+          <div id="slide1" class="slide">
+　　　　　　  <img src="http://img.youtube.com/vi/nOj_A3aZxGs/mqdefault.jpg" alt="" data-id="nOj_A3aZxGs" data-name="String Theocracy" data-art="Mili">
+            <img src="http://img.youtube.com/vi/2fOmk6pUob4/mqdefault.jpg" alt="" data-id="2fOmk6pUob4" data-name="Gentleman" data-art="Daniela Andrade">
+            <img src="http://img.youtube.com/vi/Z5QOP98Hj9A/mqdefault.jpg" alt="" data-id="Z5QOP98Hj9A" data-name="希望与えし「戌吠の神楽」" data-art="浜渦正志">
+            <img src="http://img.youtube.com/vi/AFSxlQlotVc/mqdefault.jpg" alt="" data-id="AFSxlQlotVc" data-name="Grape Soda" data-art="Snail's House/Ujico Cover">
+            <img src="http://img.youtube.com/vi/lBmPvWyQ-HY/mqdefault.jpg" alt="" data-id="lBmPvWyQ-HY" data-name="Mechanized-Memories -in-the-end-" data-art="星野康太">
+          </div>
+          <div id="slide_title"></div>
+        </section>
+        <section id="main2" class="ele">
+          <div id="cube_box"></div>
+        </section>
+      </div>
+      <div id="side">
+        <div class="album"></div>
+        <div class="album_name"><br><br></div>
+        <div id="player"></div>
+        <hr color="black">
+      </div>
+    </main>
+    <script type="text/javascript">
+      hover_id=""
+      before_id=""
+      /*start*/
+      function slide_set(){
+      let test = document.getElementById("slide1");
+      for (var i = 0; i < test.children.length; i++) {
+       console.log(test.children[i])
+
+       test.children[i].addEventListener("mouseenter",function(event){
+        var get = event.target.dataset
+        if (get.id != hover_id){
+         hover_id=get.id
+         document.getElementById("slide_title").innerHTML=get.name
+        }},false);
+
+       test.children[i].addEventListener("click",function(event){
+        var get = event.target.dataset
+        if (get.id != before_id){
+        before_id=get.id
+        document.getElementById("side").children[0].innerHTML='<img src="http://img.youtube.com/vi/'+ get.id + '/mqdefault.jpg" alt="">'
+        document.getElementById("side").children[1].innerHTML='<div><span>'+get.name+'</span></div><hr><div><span>'+get.art+'</span></div>'
+        document.getElementById("side").children[2].innerHTML='<iframe src="https://www.youtube.com/embed/'+
+        get.id +'?fs=0&disablekb=0&controls=0&loop=1&playlist=' + get.id +
+        '"frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+
+       }},false);}
+      }
+
+      slide_set()
+    </script>
+    <script type="text/javascript" src="./date/JSON_date.js"></script>
+    <script type="text/javascript" src="./scroll/infinity_scroll.js"></script>
+    <script type="text/javascript" src="./box_scroll/box_scroll.js"></script>
+  </body>
+</html>
